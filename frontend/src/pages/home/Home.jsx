@@ -30,13 +30,13 @@ const Home = () => {
     <>
       {!isMobile && (
         <div className='flex h-screen rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
-          <Sidebar isMobile={isMobile} className='flex-shrink-0 w-1/3 sm:w-1/4 md:w-1/5' />
+          <Sidebar  className='flex-shrink-0 w-1/3 sm:w-1/4 md:w-1/5' />
           <MessageContainer isMobile={isMobile} className='flex-1' />
         </div>
       )}
       {isMobile && !selectedConversation && (
         <div className='flex sm:h-[450px] md:h-[550px] rounded-lg overflow-hidden bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
-          <Sidebar isMobile={isMobile} />
+          <Sidebar />
         </div>
       )}
       {isMobile && selectedConversation && (
@@ -50,7 +50,7 @@ const Home = () => {
 
             <div className="mt-1">
               <button onClick={handleBackButtonClick} className='text-white'>
-			  <TiArrowBack size={22}/>
+			        <TiArrowBack size={22}/>
               </button>
             </div>
           </div>
