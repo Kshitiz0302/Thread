@@ -4,7 +4,7 @@ import MessageSkeleton from "../skeletons/MessageSkeleton";
 import Message from "./Message";
 import useListenMessages from "../../hooks/useListenMessages";
 
-const Messages = () => {
+const Messages = ({ isMobile = false }) => {
 	const { messages, loading } = useGetMessages();
 	useListenMessages();
 	const lastMessageRef = useRef();
@@ -16,7 +16,14 @@ const Messages = () => {
 	}, [messages]);
 
 	return (
-		<div className='px-4 flex-1 overflow-auto'>
+		<div
+			className={`px-4 overflow-auto ${isMobile ? 'w-full h-full' : 'flex-1'} ${isMobile ? 'h-full' : ''}`}
+			style={{ 
+				maxHeight: isMobile ? 'calc(100vh - 200px)' : 'auto', 
+				overflowY: 'auto',
+				width: isMobile ? '100%' : 'auto' 
+			}}
+		>
 			{!loading &&
 				messages.length > 0 &&
 				messages.map((message) => (
@@ -27,10 +34,14 @@ const Messages = () => {
 
 			{loading && [...Array(3)].map((_, idx) => <MessageSkeleton key={idx} />)}
 			{!loading && messages.length === 0 && (
-				<p className='text-center text-white'>Send a message to start the conversation</p>
+				<div className={`flex flex-col justify-start p-4 h-96`}>
+				<p className='text-center text-white mb-4'>Send a message to start the conversation</p>
+				
+			  </div>
+			  
 			)}
 		</div>
 	);
 };
-export default Messages;
 
+export default Messages;
