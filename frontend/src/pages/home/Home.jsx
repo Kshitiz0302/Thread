@@ -22,9 +22,11 @@ const Home = () => {
   }, []);
 
   const handleBackButtonClick = () => {
-    // Reset the selected conversation to show the sidebar again
+
     setSelectedConversation(null);
   };
+
+
 
   return (
     <>

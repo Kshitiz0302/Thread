@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { useAuthContext } from "./AuthContext";
+import useConversation from "../zustand/useConversation"; // Import your Zustand store
 import io from "socket.io-client";
 
 const SocketContext = createContext();
@@ -12,10 +13,11 @@ export const SocketContextProvider = ({ children }) => {
 	const [socket, setSocket] = useState(null);
 	const [onlineUsers, setOnlineUsers] = useState([]);
 	const { authUser } = useAuthContext();
+	const { updateMessageSeenStatus, setMessages } = useConversation(); // Ensure you have setMessages as well
 
 	useEffect(() => {
 		if (authUser) {
-			const socket = io("https://thread-fy3q.onrender.com/", {
+			const socket = io("http://localhost:5000/", {
 				query: {
 					userId: authUser._id,
 				},
@@ -24,14 +26,18 @@ export const SocketContextProvider = ({ children }) => {
 
 			setSocket(socket);
 
-			// socket.on() is used to listen to the events. can be used both on client and server side
 			socket.on("getOnlineUsers", (users) => {
 				setOnlineUsers(users);
 			});
 
 			socket.on("message", (newMessage) => {
-				console.log("Received new message:", newMessage);
-				// Handle the new message
+				
+				setMessages((prevMessages) => [...prevMessages, newMessage]);
+			});
+
+			socket.on("messageSeen", (seenMessage) => {
+				console.log("Message seen:", seenMessage);
+				updateMessageSeenStatus(seenMessage);
 			});
 
 			return () => socket.close();
@@ -41,7 +47,11 @@ export const SocketContextProvider = ({ children }) => {
 				setSocket(null);
 			}
 		}
-	}, [authUser]);
+	}, [authUser, updateMessageSeenStatus, setMessages]);
 
-	return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
+	return (
+		<SocketContext.Provider value={{ socket, onlineUsers }}>
+			{children}
+		</SocketContext.Provider>
+	);
 };
