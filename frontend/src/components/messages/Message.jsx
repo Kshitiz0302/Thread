@@ -19,7 +19,7 @@ const Message = ({ message }) => {
 
 	const profilePic = fromMe ? authUser.profilePic : selectedConversation?.profilePic;
 
-	const bubbleBgColor = fromMe ? "bg-blue-500" : "bg-gray-700";
+	const bubbleBgColor = fromMe ? "bg-green-500" : "bg-gray-700";
 
 	const shakeClass = message.shouldShake ? "animate-shake" : "";
 
@@ -35,15 +35,17 @@ const Message = ({ message }) => {
 			<div className='flex items-center'>
 				<img alt='User avatar' src={profilePic} className='w-10 h-10 rounded-full' />
 			</div>
-			<div className={`p-3 rounded-lg text-white ${bubbleBgColor} ${shakeClass} max-w-xs`}>
+			<div className={`p-3 rounded-lg min-w-20 text-white ${bubbleBgColor} ${shakeClass} max-w-xs`}>
 				<p>{message.message}</p>
-				<div className='text-xs opacity-75 mt-1 text-right'>{formattedTime}</div>
+				<div className="flex justify-between">
 				{fromMe && !message.seen && (
-					<TiTickOutline />
+					<TiTickOutline className="mt-1"/>
 				)}
 				{fromMe && message.seen && (
-					<TiTick />
+					<TiTick className="text-blue-700 mt-1" />
 				)}
+				<div className='text-xs opacity-75 mt-1 text-right'>{formattedTime}</div>
+				</div>
 			</div>
 		</div>
 	);

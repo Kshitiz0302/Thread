@@ -17,7 +17,8 @@ export const SocketContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (authUser) {
-			const socket = io("thread-fy3q.onrender.com/", {
+			const socket = io("thread-fy3q.onrender.com/", { //deployed url
+			// const socket = io("http://localhost:5000", { //testing url
 				query: {
 					userId: authUser._id,
 				},
